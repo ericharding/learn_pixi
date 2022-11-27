@@ -10,12 +10,13 @@ async function handleHttp(conn: Deno.Conn) {
 
   for await (const requestEvent of httpConn) {
     const url = new URL(requestEvent.request.url);
-    const filepath = decodeURIComponent(url.pathname.slice(1));
+    var filepath = decodeURIComponent(url.pathname.slice(1));
+    if (filepath == "") { filepath = "index.html"; }
 
     // Try opening the file
     let file;
     try {
-      console.log(filepath)
+      console.log(`Loading ${filepath}`);
       file = await Deno.open(filepath);
     } catch {
       const notFound = new Response("404 not found", { status: 404 });
