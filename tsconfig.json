@@ -7,11 +7,11 @@
         "module": "ESNext",
     
         // Rules for your code
-        "strict": true,
-        "noImplicitAny": true,
-        "noImplicitReturns": true,
-        "noUnusedParameters": true,
-        "noUnusedLocals": true,
+        "strict": false,
+        "noImplicitAny": false,
+        "noImplicitReturns": false,
+        "noUnusedParameters": false,
+        "noUnusedLocals": false,
         "noFallthroughCasesInSwitch": true,
         "noImplicitOverride": true,
 
@@ -21,6 +21,8 @@
         "resolveJsonModule": true,
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
+        "allowJs": true,
+        "noEmit": false
 
     },
     // Folder for your code

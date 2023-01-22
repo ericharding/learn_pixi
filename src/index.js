@@ -14,7 +14,10 @@ const bunny = Sprite.from("bunny.png");
 bunny.anchor.set(0.5);
 bunny.x = app.screen.width / 2;
 bunny.y = app.screen.height / 2;
+bunny.interactive = true;
 app.stage.addChild(bunny);
+
+// let explosion = null;
 
 Assets.load("boom.json").then((boomTex) => {
   const explostionTexture = [];
@@ -23,17 +26,19 @@ Assets.load("boom.json").then((boomTex) => {
     explostionTexture.push(texture);
   }
 
-  const explosion = new AnimatedSprite(explostionTexture);
+  let explosion = new AnimatedSprite(explostionTexture);
   explosion.x = bunny.x;
   explosion.y = bunny.y;
   explosion.anchor.set(0.5);
   explosion.rotation = Math.random() * Math.PI;
-  explosion.visible = false;
+  explosion.loop = false;
 
-  bunny?.onclick((_) => {
-    explosion.visible = true;
+  bunny.on("pointertap", () => {
+    app.stage.addChild(explosion);
     explosion.play();
+    bunny.visible = false;
   });
 });
 
-// const boom =
+
+
