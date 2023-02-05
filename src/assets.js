@@ -5,7 +5,8 @@ const manifest = {
       name: "main",
       assets: [
         {name: "bunny", srcs: "bunny.png"},
-        {name: "boom", srcs: "boom.json"}
+        {name: "boom", srcs: "boom.json"},
+        {name: "field", srcs: "quiet_field.png"},
       ],
     },
   ],
