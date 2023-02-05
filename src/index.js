@@ -1,4 +1,5 @@
 import { AnimatedSprite, Application, Assets, Sprite } from "pixi.js";
+import { loadAssets } from "./assets";
 
 const app = new Application({
   view: document.getElementById("pixi-canvas"),
@@ -9,24 +10,17 @@ const app = new Application({
   height: 480,
 });
 
-// Load innocent bunny
-const bunny = Sprite.from("bunny.png");
-bunny.anchor.set(0.5);
-bunny.x = app.screen.width / 2;
-bunny.y = app.screen.height / 2;
-bunny.interactive = true;
-app.stage.addChild(bunny);
+async function gameLoaded() {
+  const textures = await Assets.loadBundle("main");
 
-// let explosion = null;
+  const bunny = Sprite.from(textures.bunny);
+  bunny.anchor.set(0.5)
+  bunny.x = app.screen.width / 2;
+  bunny.y = app.screen.height / 2;
+  bunny.interactive = true;
+  app.stage.addChild(bunny);
 
-Assets.load("boom.json").then((boomTex) => {
-  const explostionTexture = [];
-  for (let i = 0; i < 26; i++) {
-    const texture = boomTex.textures[`Explosion_Sequence_A ${i + 1}.png`];
-    explostionTexture.push(texture);
-  }
-
-  let explosion = new AnimatedSprite(explostionTexture);
+  const explosion = new AnimatedSprite(textures.boom.animations.boom);
   explosion.x = bunny.x;
   explosion.y = bunny.y;
   explosion.anchor.set(0.5);
@@ -38,7 +32,9 @@ Assets.load("boom.json").then((boomTex) => {
     explosion.play();
     bunny.visible = false;
   });
-});
+}
+
+loadAssets(gameLoaded);
 
 
 
