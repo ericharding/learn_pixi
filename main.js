@@ -1,7 +1,7 @@
 import { Application, Sprite } from "pixi.js";
 
 const app = new Application({
-  view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
+  view: document.getElementById("pixi-canvas"),
   resolution: window.devicePixelRatio || 1,
   autoDensity: true,
   backgroundColor: "black",
