@@ -1,4 +1,5 @@
 import { Application, Sprite } from "pixi.js";
+import { loadAssets } from "./assets";
 
 const app = new Application({
   view: document.getElementById("pixi-canvas"),
