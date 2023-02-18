@@ -1,4 +1,5 @@
-import { AnimatedSprite, Application, Assets, Sprite } from "pixi.js";
+import { AnimatedSprite, Application, Assets, Sprite, SimplePlane } from "pixi.js";
+import { loadAssets } from "./assets";
 
 const app = new Application({
   view: document.getElementById("pixi-canvas"),
@@ -9,31 +10,43 @@ const app = new Application({
   height: 480,
 });
 
-// Load innocent bunny
-const bunny = Sprite.from("bunny.png");
-bunny.anchor.set(0.5);
-bunny.x = app.screen.width / 2;
-bunny.y = app.screen.height / 2;
-app.stage.addChild(bunny);
+async function gameLoaded() {
+  const textures = await Assets.loadBundle("main");
 
-Assets.load("boom.json").then((boomTex) => {
-  const explostionTexture = [];
-  for (let i = 0; i < 26; i++) {
-    const texture = boomTex.textures[`Explosion_Sequence_A ${i + 1}.png`];
-    explostionTexture.push(texture);
-  }
+  const background = new SimplePlane(textures.field);
+  background.width = app.screen.width;
+  background.height = app.screen.height;
+  app.stage.addChild(background);
 
-  const explosion = new AnimatedSprite(explostionTexture);
-  explosion.x = bunny.x;
-  explosion.y = bunny.y;
+  const bunny = Sprite.from(textures.bunny);
+  bunny.anchor.set(0.5);
+  bunny.x = 0;
+  bunny.y = 400;
+  bunny.interactive = true;
+  app.stage.addChild(bunny);
+
+  const explosion = new AnimatedSprite(textures.boom.animations.boom);
   explosion.anchor.set(0.5);
   explosion.rotation = Math.random() * Math.PI;
-  explosion.visible = false;
+  explosion.loop = false;
 
-  bunny?.onclick((_) => {
-    explosion.visible = true;
+  bunny.on("pointertap", () => {
+    app.stage.addChild(explosion);
+    explosion.x = bunny.x;
+    explosion.y = bunny.y;
     explosion.play();
+    bunny.visible = false;
   });
-});
 
-// const boom =
+  let speed = 0.5;
+
+  bunny.on('pointermove', () => {
+    speed += 0.1;
+  });
+
+  app.ticker.add((timeDelta) => {
+    bunny.x = (bunny.x + speed * timeDelta) % app.screen.width;
+  });
+}
+
+loadAssets(gameLoaded);

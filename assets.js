@@ -1,4 +1,4 @@
-import { Assets, ResolverManifest } from "pixi.js";
+import { Assets } from "pixi.js";
 
 const manifest = {
   bundles: [{
